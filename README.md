@@ -48,3 +48,41 @@ start({
 
 **完全隔离用影子**
 
+# 模块联邦
+```js
+//webpack 5才有
+//导出
+//webpack.config.js
+const {ModuleFederationPlugin} = require("webpack").container
+//plugins
+new ModuleFederationPlugin({
+  name:"xx",
+  filename:"dist.js",
+  // remotes:{
+  //   home:"xx@http://localhost: 端口/dist.js"
+  // },
+  exposes:{
+    "./a":"./src/components/home",
+    "./b":"./src/components/about"
+  }
+})
+
+//导入
+new ModuleFederationPlugin({
+  name:"xx",
+  filename:"dist.js",
+  remotes:{
+    home:"xx@http://localhost: 端口/dist.js"
+  },
+  exposes:{    
+  }
+})
+//页面
+//vue
+const a = defineAsyncComponent(()=>import("home/a"))
+//react
+const b = React.lazy(()=>import("home/b"))
+
+
+```
+
